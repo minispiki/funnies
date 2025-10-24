@@ -1,4 +1,7 @@
-import ollama
+import ollama as ai
+
+ChatResponse = ai.ChatResponse
+chat = ai.chat
 
 # config
 name = "USER"
@@ -8,7 +11,7 @@ msg_query_suffix = "> " # including a space is recommended
 
 def main():
     print("--Temp CHAT: all msgs are forgotten.--")
-    print(ollama.list())
+    print(ai.list())
     print("Select your model")
     model = input()
     while True:
@@ -23,7 +26,7 @@ def main():
 def send(mod, msg):
     if command(msg) == 1:
         return 1
-    response: ollama.ChatResponse = ollama.chat(model=mod, messages=[
+    response: ChatResponse = chat(model=mod, messages=[
         {
             'role': 'user',
             'content': msg
