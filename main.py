@@ -11,26 +11,29 @@ msg_suffix = "> " # including a space is recommended
 
 def main():
     print("--Temp CHAT: all msgs are forgotten.--")
-    print(ai.list())
+
+    for m in ai.list()["models"]:
+        print(m["model"])
+
     print("Select your model")
     model = input()
     while True:
-        message = input(name+":"+ " " + msg_suffix)
+        message = input("\n"+name+":"+ " " + msg_suffix)
         ans = send(model, message)
         commmandHandle(ans)
-        print(model+": "+msg_suffix ,ans)
+
 
 def send(mod, msg):
     if command(msg) == 1:
         return 1
-    response: ChatResponse = chat(model=mod, messages=[
-        {
-            'role': 'user',
-            'content': msg
+    stream = chat(
+        model=mod,
+        messages=[{'role': 'user', 'content': msg}],
+        stream=True,
+    )
 
-        },
-    ])
-    return (response['message']['content'])
+    for chunk in stream:
+        print(chunk['message']['content'], end='', flush=True)
 
 def command(msg):
     if msg == (command_prefix + "exit") or msg == (command_prefix + "quit"):
