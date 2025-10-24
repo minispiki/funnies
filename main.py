@@ -6,7 +6,7 @@ chat = ai.chat
 # config
 name = "USER"
 command_prefix = "/"
-msg_query_suffix = "> " # including a space is recommended
+msg_suffix = "> " # including a space is recommended
 # end of config
 
 def main():
@@ -15,13 +15,10 @@ def main():
     print("Select your model")
     model = input()
     while True:
-        message = input(name+":"+ " " + msg_query_suffix)
+        message = input(name+":"+ " " + msg_suffix)
         ans = send(model, message)
-        if ans == 1:
-            print("Stopping [!!!]")
-            quit()
-        else:
-            print(ans)
+        commmandHandle(ans)
+        print(model+": "+msg_suffix ,ans)
 
 def send(mod, msg):
     if command(msg) == 1:
@@ -38,6 +35,13 @@ def send(mod, msg):
 def command(msg):
     if msg == (command_prefix + "exit") or msg == (command_prefix + "quit"):
         return 1
+    else:
+        return 0 # non error
+
+def commmandHandle(returnval):
+    if returnval == 1:
+        print("Stopping [?]")
+        quit()
 
 if __name__ == "__main__":
     main()
